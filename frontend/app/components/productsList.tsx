@@ -6,7 +6,7 @@ export default function ProductList() {
   const items = [...Array(12).keys()].map(i => i + 1); // [1, 2, ..., 12]
 
   return (
-    <div className="bg-white shadow-md rounded-xl p-4+ mx-auto">
+    <div className="bg-white shadow-md rounded-xl p-4 mx-auto">
       <div className="mb-4">
         <h2 className="text-xl font-aldrich text-gray-800">Product Selector</h2>
       </div>
