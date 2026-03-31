@@ -21,12 +21,31 @@ var result = await supabase.From<Product>().Get();
 var product = result.Models;
 Console.WriteLine(product[0].Title);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+        policy.WithOrigins("http://localhost:3000")
+            .AllowAnyHeader()
+            .AllowAnyMethod());
+});
+
+
 await supabase.InitializeAsync();
-builder.Services.AddControllers(); 
+// builder.Services.AddControllers(); 
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNamingPolicy = null;
+        options.JsonSerializerOptions.DefaultIgnoreCondition = 
+            System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
+    });
+
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSingleton(supabase);
 
 var app = builder.Build();
 
+app.UseCors("AllowFrontend");
 
 app.UseHttpsRedirection();
 

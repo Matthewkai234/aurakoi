@@ -6,10 +6,29 @@ import { ShoppingCart, User, Languages, Home, Shirt, Store, ShoppingBag, UserCir
 import YinYangLogo from "../assets/yinyang.png";
 import Image from "next/image";
 
+
+interface StoreCategories {
+    Category: string;
+}
+
 export default function Navbar() {
     const [userMenuOpen, setUserMenuOpen] = useState(false);
     const [language, setLanguage] = useState("en");
     const userMenuRef = useRef<HTMLDivElement>(null);
+    const [categories, setCategories] = useState<string[]>([]);
+    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+    
+    useEffect(() => {
+        async function fetchCategories() {
+            const res = await fetch("/api/products/");
+            const data = await res.json();
+            const dataSet: Set<string> = new Set(data.map((item: StoreCategories) => item.Category));
+            setCategories([...dataSet])
+            console.log("Fetched categories:", [...dataSet]);
+        }
+        fetchCategories();
+    }, []);
+    useEffect(() => { console.log(categories); }, [categories])
 
 
     const toggleLanguage = () => {
@@ -17,18 +36,7 @@ export default function Navbar() {
         console.log("Language toggled to", language === "en" ? "he" : "en");
     };
 
-    const navItems = [
-        {
-            href: "/dashboard",
-            label: "Home",
-            icon: Home,
-        },
-        {
-            href: "/store",
-            label: "Store",
-            icon: Store,
-        },
-    ];
+
 
     return (
         <nav className="bg-white shadow-md px-4 py-2">
@@ -42,21 +50,40 @@ export default function Navbar() {
                             height={58.86}
                             style={{ padding: "5px" }}
                             priority
+                            className="animate-spin"
                         />
                     </Link>
                 </div>
 
                 <div className="hidden md:flex space-x-6">
-                    {navItems.map((item, index) => (
-                        <Link
-                            key={index}
-                            href={item.href}
-                            className="flex items-center space-x-1 text-gray-700 hover:text-blue-600 transition"
-                        >
-                            <item.icon size={20} />
-                            <span>{item.label}</span>
-                        </Link>
-                    ))}
+                    <Link
+                        href="/home"
+                        className="flex items-center space-x-1 text-gray-700 hover:text-blue-600 transition"
+                    >
+                        Home
+                        <Home size={20} />
+                    </Link>
+
+
+                    <div className="relative">
+                        <div className="dropdown dropdown-start">
+                            <div tabIndex={0} role="button" className="flex items-center space-x-1 p-2 text-gray-700 hover:text-blue-600 transition cursor-pointer">
+                                <Store size={20} />
+                                Store
+                            </div>
+                            <ul tabIndex={-1} className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
+                                <li> <button onClick={() => setSelectedCategory(null)}>All</button> </li>
+                                {categories.map((cat,i) => (
+                                    <li key={i}>
+                                        <button onClick={() => setSelectedCategory(cat)}>
+                                            {cat}
+                                        </button>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+
                 </div>
 
                 <div className="flex items-center space-x-4">

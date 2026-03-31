@@ -20,5 +20,11 @@ namespace Backend.Models
         public string? ImageUrl { get; set; } = "";
         [Column("sizes")]
         public string[]? Sizes { get; set; } = null;
+        [Column("stock")]
+        public int Stock { get; set; }
+        [Column("sub_category")]
+        public string SubCategory { get; set; } = ""; 
+        [Column("icon_image")]
+        public string? IconImage { get; set; } = "";
     }
 }
