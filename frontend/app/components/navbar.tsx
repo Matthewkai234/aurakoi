@@ -39,7 +39,7 @@ export default function Navbar() {
 
 
     return (
-        <nav className="bg-white shadow-md px-4 py-2">
+        <nav className="sticky bg-white shadow-md px-4 py-2 border-b-2 border-gray-300 opacity-90">
             <div className="container mx-auto flex items-center justify-between">
                 <div className="flex-shrink-0">
                     <Link href="/">
@@ -50,7 +50,6 @@ export default function Navbar() {
                             height={58.86}
                             style={{ padding: "5px" }}
                             priority
-                            className="animate-spin"
                         />
                     </Link>
                 </div>
@@ -59,9 +58,9 @@ export default function Navbar() {
                     <Link
                         href="/home"
                         className="flex items-center space-x-1 text-gray-700 hover:text-blue-600 transition"
-                    >
+                    >                        <Home size={20} />
+
                         Home
-                        <Home size={20} />
                     </Link>
 
 

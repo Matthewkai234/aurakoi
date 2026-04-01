@@ -3,19 +3,38 @@ import Navbar from '../components/navbar';
 import ProductDetail from '../components/productInfo';
 import ProductInfo from '../components/productInfo';
 import ProductList from '../components/productsList';
+import Pillar from '../assets/pillar.png';
+import Image from 'next/image';
+import LiveWallpaper from '../components/liveWallpaper';
+import Footer from '../components/footer';
 export default function Store() {
     return (
-        <>
-            <Navbar />
-            <div className='flex flex-col-3 items-center justify-center h-screen gap-4'>
-                <div className='flex max-w-[80%] w-full h-4/4  bg-transparent items-center justify-center border-r-2 border-l-2 border-gray-300'>
-                    <ProductList />
+        <div className="relative w-full h-screen overflow-hidden">
+
+            {/* 🎥 Background Video */}
+            <LiveWallpaper />
+            {/* 🧩 Content */}
+            <div className="relative z-20">
+                <Navbar />
+
+                <div className="flex  h-screen items-center  ">
+                    <div className="flex flex-col w-full items-center border-r-2 border-l-2 border-gray-300">
+                        <ProductList />
+                    </div>
+
+                    <div className="flex max-w-[80%] w-full items-center justify-center border-r-2 border-gray-300">
+                        <ProductInfo />
+                        
+                    </div>
+
+                    <div className="flex max-w-[80%] w-full items-center justify-center border-r-2 border-gray-300">
+                        <ProductInfo />
+                    </div>
                 </div>
-                <div className='flex max-w-[80%] w-full h-4/4  bg-transparent items-center justify-center border-r-2 border-gray-300'>
-                </div>
-                <div className='flex max-w-[80%] w-full h-4/4  bg-transparent items-center justify-center border-r-2 border-gray-300 '>
-                </div>
+
             </div>
-        </>
+
+        </div>
+
     );
 }
