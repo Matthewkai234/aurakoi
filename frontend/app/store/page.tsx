@@ -9,7 +9,7 @@ import LiveWallpaper from '../components/liveWallpaper';
 import Footer from '../components/footer';
 export default function Store() {
     return (
-        <div className="relative w-full h-screen overflow-hidden">
+        <div className="relative w-full h-full">
 
             {/* 🎥 Background Video */}
             <LiveWallpaper />
@@ -17,8 +17,8 @@ export default function Store() {
             <div className="relative z-20">
                 <Navbar />
 
-                <div className="flex  h-screen items-center  ">
-                    <div className="flex flex-col w-full items-center border-r-2 border-l-2 border-gray-300">
+                <div className="flex ">
+                    <div className="flex items-center border-r-2 border-l-2 border-gray-300 ">
                         <ProductList />
                     </div>
 
