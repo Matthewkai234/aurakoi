@@ -39,8 +39,8 @@ export default function Navbar() {
 
 
     return (
-        <nav className="bg-white shadow-md px-4 py-2 sticky z-30 opacity-90">
-            <div className="container mx-auto flex items-center justify-between">
+        <nav className="bg-white shadow-md px-4 py-2 sticky z-30 opacity-90" >
+            <div className=" container mx-auto flex items-center justify-between  ">
                 <div className="flex-shrink-0">
                     <Link href="/">
                         <Image

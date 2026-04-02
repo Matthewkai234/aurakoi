@@ -1,7 +1,11 @@
 "use client";
 import React, { useEffect, useState, useCallback, useMemo, useRef } from "react";
 import Image from "next/image";
-import { SlidersHorizontal, ShoppingBag, Sparkles } from "lucide-react";
+import { SlidersHorizontal, Sparkles } from "lucide-react";
+import { BsYinYang } from "react-icons/bs";
+import Yin from "../assets/yin.png";
+import Yang from "../assets/yang.png";
+import Buttons from "./buttons"; // adjust path as needed
 
 // Interface matches backend PascalCase DTO exactly
 interface Product {
@@ -24,7 +28,7 @@ export default function ProductList() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [cartMessage, setCartMessage] = useState<string>("");
   const [isAdding, setIsAdding] = useState<boolean>(false);
-  
+
   // Zoom lens state
   const [zoomActive, setZoomActive] = useState<boolean>(false);
   const [zoomPosition, setZoomPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
@@ -60,7 +64,7 @@ export default function ProductList() {
     fetchProducts();
   }, [category]);
 
-  // Memoize filtered products to prevent unnecessary re-renders and effect triggers
+  // Memoize filtered products
   const filtered = useMemo(() => {
     if (selectedSub) {
       return products.filter(
@@ -110,22 +114,24 @@ export default function ProductList() {
   }, []);
 
   return (
-    <div className="relative min-h-screen w-full overflow-x-hidden bg-ink-paper opacity-90 z-20 ">
-      {/* Yin Yang Decorative Element */}
-      <div className="fixed bottom-6 right-6 z-30 pointer-events-none">
+    <div className="relative min-h-screen w-full overflow-x-hidden bg-ink-paper opacity-90 z-20">
+
+      {/* <div className="fixed bottom-6 right-6 z-30 pointer-events-none">
         <div className="relative w-20 h-20">
-          <div className="absolute inset-0 ">
+          <div className="absolute inset-0">
             <div className="fab fab-flower">
-              <div tabIndex={0} role="button" className="btn btn-lg btn-circle btn-success bg-gray-800 text-white hover:bg-black"></div>
-              <button className="fab-main-action btn btn-circle btn-lg">M</button>
-              <button className="btn btn-lg btn-circle">A</button>
-              <button className="btn btn-lg btn-circle">B</button>
-              <button className="btn btn-lg btn-circle">C</button>
-              <button className="btn btn-lg btn-circle">D</button>
+              <div tabIndex={0} role="button" className="btn btn-lg btn-circle btn-success text-white bg-black"><BsYinYang className="h-10 w-10" /></div> //when i click here both buttons appear
+              <button className="fab-main-action btn btn-circle btn-lg"><BsYinYang className="h-10 w-10 reverse" /></button> // don't touch this 
+              <button className="btn btn-lg btn-circle justify-end bg-white"> //whe i click here its dark
+                <Image src={Yin} alt="yin-darktheme" height={30} width={34} />
+              </button>
+              <button className="btn btn-lg btn-circle justify-start bg-black"> //when i click here its light 
+                <Image src={Yang} alt="yin-lighttheme" height={30} width={34} />
+              </button>
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div className="container mx-auto px-4 py-12 md:py-16 relative z-10">
         {/* Page Title with Calligraphy Style */}
@@ -137,9 +143,7 @@ export default function ProductList() {
             </h1>
             <div className="w-6 h-px bg-gray-400 rotate-12" />
           </div>
-          <p className="text-gray-500 text-sm mt-4 font-light italic">
-            水墨·阴阳·自然之选
-          </p>
+          <p className="text-gray-500 text-sm mt-4 font-light italic">水墨·阴阳·自然之选</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -148,9 +152,7 @@ export default function ProductList() {
             <div className="flex justify-between items-center px-5 py-4 border-b border-gray-100">
               <div className="flex items-center gap-2">
                 <div className="w-1 h-6 bg-gray-500 rounded-full" />
-                <h2 className="text-lg font-medium text-gray-700 tracking-wide">
-                  {category}
-                </h2>
+                <h2 className="text-lg font-medium text-gray-700 tracking-wide">{category}</h2>
               </div>
               <div className="dropdown dropdown-end">
                 <div
@@ -159,7 +161,7 @@ export default function ProductList() {
                   className="flex items-center gap-1 px-2 py-1 text-gray-500 hover:text-gray-800 transition-all duration-300 hover:bg-gray-50 rounded-full cursor-pointer"
                 >
                   <SlidersHorizontal className="w-4 h-4" />
-                  <span className="text-xs hidden sm:inline"> 选  · Select </span>
+                  <span className="text-xs hidden sm:inline">选 · Select</span>
                 </div>
                 <ul className="dropdown-content menu bg-white/95 backdrop-blur-sm rounded-xl z-20 min-w-36 p-2 shadow-lg border border-gray-100">
                   <li key="all" className="w-full">
@@ -231,7 +233,7 @@ export default function ProductList() {
           {/* Column 2: Main Product Image - Zen Gallery with Zoom Lens */}
           <div className="bg-gray-50/50 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-200/60 p-6 flex items-center justify-center min-h-[400px] transition-all duration-500">
             {selectedProduct?.ImageUrl ? (
-              <div 
+              <div
                 ref={imageContainerRef}
                 className="relative w-full h-80 md:h-96 group cursor-crosshair"
                 onMouseEnter={() => setZoomActive(true)}
@@ -249,13 +251,13 @@ export default function ProductList() {
                 />
                 {/* Ink brush stroke decoration */}
                 <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-1/3 h-px bg-gradient-to-r from-transparent via-gray-400 to-transparent" />
-                
+
                 {/* Zoom Lens */}
                 {zoomActive && (
                   <div
-                    className="fixed w-40 h-40 rounded-full border-2 border-white/60 shadow-2xl pointer-events-none z-50 backdrop-blur-sm "
+                    className="fixed w-40 h-40 rounded-full border-2 border-white/60 shadow-2xl pointer-events-none z-50 backdrop-blur-sm"
                     style={{
-                      left: `${zoomPosition.x}% `,
+                      left: `${zoomPosition.x}%`,
                       top: `${zoomPosition.y}%`,
                       transform: 'translate(-50%, -50%)',
                       backgroundImage: `url(${selectedProduct.ImageUrl})`,
@@ -297,9 +299,7 @@ export default function ProductList() {
                   <span className="text-3xl font-light text-gray-800">
                     ¥{selectedProduct.Price?.toFixed(2) ?? "0.00"}
                   </span>
-                  <span className="text-xs text-gray-400 tracking-wider">
-                    水墨价
-                  </span>
+                  <span className="text-xs text-gray-400 tracking-wider">水墨价</span>
                 </div>
 
                 {/* Stock status with yin-yang balance */}
@@ -347,40 +347,14 @@ export default function ProductList() {
                   </p>
                 </div>
 
-                {/* Add to Cart Button with Zen Animation */}
+                {/* Add to Cart Button - using the extracted Buttons component */}
                 <div className="pt-4">
-                  <button
-                    onClick={() => handleAddToCart(selectedProduct)}
-                    disabled={selectedProduct.Stock <= 0 || isAdding}
-                    className={`
-                      group relative w-full py-3 px-4 rounded-full overflow-hidden
-                      transition-all duration-500 ease-out
-                      ${
-                        selectedProduct.Stock > 0
-                          ? "bg-gray-800 text-white hover:bg-black cursor-pointer"
-                          : "bg-gray-200 text-gray-400 cursor-not-allowed"
-                      }
-                    `}
-                  >
-                    <span className="relative z-10 flex items-center justify-center gap-2 text-sm tracking-wide">
-                      {isAdding ? (
-                        <>
-                          <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                          入篮中 · Adding
-                        </>
-                      ) : (
-                        <>
-                          <ShoppingBag className="w-4 h-4 transition-transform duration-300 group-hover:scale-110" />
-                          {selectedProduct.Stock > 0 ? "添至竹篮 · Add to Cart" : "已无余 · Out of Stock"}
-                        </>
-                      )}
-                    </span>
-                    {/* Ink wash hover effect */}
-                    {selectedProduct.Stock > 0 && (
-                      <div className="absolute inset-0 -translate-x-full group-hover:translate-x-0 transition-transform duration-500 bg-gradient-to-r from-gray-700 to-black" />
-                    )}
-                  </button>
-
+                  <Buttons
+                    variant="addToCart"
+                    stock={selectedProduct.Stock}
+                    isAdding={isAdding}
+                    onAddToCart={() => handleAddToCart(selectedProduct)}
+                  />
                   {cartMessage && (
                     <div className="mt-3 text-center animate-fade-in-up">
                       <p className="text-xs text-gray-600 bg-gray-50 inline-block px-3 py-1.5 rounded-full shadow-sm">
