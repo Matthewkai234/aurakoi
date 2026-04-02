@@ -39,7 +39,7 @@ export default function Navbar() {
 
 
     return (
-        <nav className="bg-white shadow-md px-4 py-2">
+        <nav className="bg-white shadow-md px-4 py-2 sticky z-30 opacity-90">
             <div className="container mx-auto flex items-center justify-between">
                 <div className="flex-shrink-0">
                     <Link href="/">
@@ -50,7 +50,6 @@ export default function Navbar() {
                             height={58.86}
                             style={{ padding: "5px" }}
                             priority
-                            className="animate-spin"
                         />
                     </Link>
                 </div>
@@ -65,7 +64,7 @@ export default function Navbar() {
                     </Link>
 
 
-                    <div className="relative">
+                    <div className="relative flex ">
                         <div className="dropdown dropdown-start">
                             <div tabIndex={0} role="button" className="flex items-center space-x-1 p-2 text-gray-700 hover:text-blue-600 transition cursor-pointer">
                                 <Store size={20} />
