@@ -34,9 +34,11 @@ export default function RootLayout({
       data-theme="light"
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    > 
-      <ThemeFab/>
-      <body className={`${aldrich.className} min-h-full flex flex-col`}>{children}</body>
+    >
+      <body className={`${aldrich.className} min-h-full flex flex-col`}>
+        {children}      
+        <ThemeFab />
+      </body>
     </html>
   );
 }

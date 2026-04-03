@@ -5,16 +5,12 @@ import { useState, useRef, useEffect } from "react";
 import { ShoppingCart, User, Languages, Home, Shirt, Store, ShoppingBag, UserCircle, User2, UserCheck } from "lucide-react";
 import YinYangLogo from "../assets/yinyang.png";
 import Image from "next/image";
-
-
-interface StoreCategories {
-    Category: string;
-}
+import { Product } from "../../types/Iproduct";
 
 export default function Navbar() {
-    const [userMenuOpen, setUserMenuOpen] = useState(false);
+    // const [userMenuOpen, setUserMenuOpen] = useState(false);
     const [language, setLanguage] = useState("en");
-    const userMenuRef = useRef<HTMLDivElement>(null);
+    // const userMenuRef = useRef<HTMLDivElement>(null);
     const [categories, setCategories] = useState<string[]>([]);
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
     
@@ -22,11 +18,12 @@ export default function Navbar() {
         async function fetchCategories() {
             const res = await fetch("/api/products/");
             const data = await res.json();
-            const dataSet: Set<string> = new Set(data.map((item: StoreCategories) => item.Category));
+            const dataSet: Set<string> = new Set(data.map((item: Product) => item.Category));
             setCategories([...dataSet])
             console.log("Fetched categories:", [...dataSet]);
         }
         fetchCategories();
+        
     }, []);
     useEffect(() => { console.log(categories); }, [categories])
 

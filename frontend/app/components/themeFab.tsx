@@ -10,6 +10,7 @@ export default function ThemeFab() {
              
 
   return (
+    <>
           <div className="fixed bottom-6 right-6 z-30 pointer-events-none">
             <div className="relative w-20 h-20">
               <div className="absolute inset-0">
@@ -26,5 +27,6 @@ export default function ThemeFab() {
               </div>
             </div>
           </div>
+          </>
   );
 }
