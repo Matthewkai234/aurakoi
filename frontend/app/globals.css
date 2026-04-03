@@ -59,3 +59,12 @@ body {
 .animate-fade-in-up {
   animation: fadeInUp 0.4s ease-out forwards;
 }
+
+[data-theme="light"] .theme-aware {
+  background-color: white !important;
+  color:#616161 !important;
+}
+[data-theme="dark"] .theme-aware {
+  background-color: #1F2937 !important;
+  color: white !important;            
+}

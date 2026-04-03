@@ -17,7 +17,7 @@ export default function ThemeFab() {
                 <div className="fab fab-flower">
                   <div tabIndex={0} role="button" className="btn btn-lg btn-circle btn-success text-white bg-black"><BsYinYang className="h-10 w-10" /></div> 
                   <button className="fab-main-action btn btn-circle btn-lg"><BsYinYang className="h-10 w-10 reverse" /></button>
-                  <button className="btn btn-lg btn-circle justify-end bg-white" onClick={() => setTheme("dark")}>
+                  <button className="btn btn-lg btn-circle justify-end bg-white " onClick={() => setTheme("dark")}>
                     <Image src={Yin} alt="yin-darktheme" height={30} width={34} />
                   </button>
                   <button className="btn btn-lg btn-circle justify-start bg-black" onClick={() => setTheme("light")}> 

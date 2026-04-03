@@ -2,16 +2,18 @@
 import { ShoppingBag } from "lucide-react";
 import { useState } from "react";
 import { Product } from "../../types/Iproduct";
+import { LogIn, UserPlus } from "lucide-react";
 
 interface ButtonProps {
-  variant: "primary" | "secondary" | "addToCart";
+  variant: "primary" | "secondary" | "addToCart" | "Auth";
   content?: string;
-  // props for addToCart variant
-  product?: Product;                
-  onAddToCart?: (product: Product) => Promise<void>; 
+
+  product?: Product;
+  onAddToCart?: (product: Product) => Promise<void>;
+  authtype?: "login" | "signup";
 }
 
-export default function Buttons({ variant, content, product, onAddToCart }: ButtonProps) {
+export default function Buttons({ variant, content, product, onAddToCart, authtype }: ButtonProps) {
   const [isAdding, setIsAdding] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -19,8 +21,29 @@ export default function Buttons({ variant, content, product, onAddToCart }: Butt
     return <button className="px-4 py-2 bg-gray-800 text-white rounded-full">{content}</button>;
   }
 
+  if (variant === "Auth") {
+    return (
+      <button
+        type="submit"
+        className="w-full py-3 rounded-full font-medium flex items-center justify-center gap-2 bg-gray-800 text-white cursor-pointer transition-all duration-300 tracking-wide hover:bg-gray-700 shadow-sm"
+      >
+        {authtype === "login" ? (
+          <>
+            <LogIn className="w-4 h-4" />
+            登录 · Sign In
+          </>
+        ) : (
+          <>
+            <UserPlus className="w-4 h-4" />
+            创建账户 · Create Account
+          </>
+        )}
+      </button>
+    );
+  }
+
   if (variant === "addToCart") {
-    if (!product) return null; // safety
+    if (!product) return null;
 
     const isOutOfStock = !product.Stock || product.Stock <= 0;
     const disabled = isOutOfStock || isAdding;
@@ -86,6 +109,5 @@ export default function Buttons({ variant, content, product, onAddToCart }: Butt
     );
   }
 
-  // fallback / secondary variant
   return <button className="px-4 py-2 border border-gray-400 rounded-full">{content}</button>;
 }
