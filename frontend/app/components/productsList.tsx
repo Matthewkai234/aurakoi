@@ -80,37 +80,37 @@ export default function ProductList() {
   }, []);
 
   return (
-    <div className="relative min-h-screen w-full overflow-x-hidden bg-ink-paper opacity-90 z-20">
+    <div className="relative min-h-screen w-full overflow-x-hidden theme-aware-background opacity-90 z-20">
       <div className="container mx-auto px-4 py-12 md:py-16 relative z-10">
         {/* Page Title */}
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-3 px-6 py-2 border-b border-gray-300">
-            <Sparkles className="w-4 h-4 text-gray-500" />
-            <h1 className="text-3xl md:text-4xl font-light tracking-wide text-gray-800 font-serif">
+            <Sparkles className="w-4 h-4 theme-aware-secondry-color" />
+            <h1 className="text-3xl md:text-4xl font-light tracking-wide font-serif">
               {category}
             </h1>
-            <div className="w-6 h-px bg-gray-400 rotate-12" />
+            <div className="w-6 h-px theme-aware-secondry-background rotate-12" />
           </div>
-          <p className="text-gray-500 text-sm mt-4 font-light italic">水墨·阴阳·自然之选</p>
+          <p className="theme-aware-secondry-color text-sm mt-4 font-light italic">水墨·阴阳·自然之选</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Column 1: Product Icons with Filter */}
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-200/60 overflow-hidden">
+          <div className="theme-aware backdrop-blur-sm rounded-2xl shadow-sm border border-gray-200/60 overflow-hidden">
             <div className="flex justify-between items-center px-5 py-4 border-b border-gray-100">
               <div className="flex items-center gap-2">
                 <div className="w-1 h-6 bg-gray-500 rounded-full" />
-                <h2 className="text-lg font-medium text-gray-700 tracking-wide">{category}</h2>
+                <h2 className="text-lg font-medium tracking-wide">{category}</h2>
               </div>
               <div className="dropdown dropdown-end">
-                <div tabIndex={0} role="button" className="flex items-center gap-1 px-2 py-1 text-gray-500 hover:text-gray-800 transition-all duration-300 hover:bg-gray-50 rounded-full cursor-pointer">
+                <div tabIndex={0} role="button" className="flex items-center mt-1 gap-1  py-1  theme-aware-primary-color transition-all duration-300 hover:scale-105 rounded-full cursor-pointer">
                   <SlidersHorizontal className="w-4 h-4" />
                   <span className="text-xs hidden sm:inline">选 · Select</span>
                 </div>
-                <ul className="dropdown-content menu bg-white/95 backdrop-blur-sm rounded-xl z-20 min-w-36 p-2 shadow-lg border border-gray-100">
-                  <li><button onClick={() => setSelectedSub(null)} className="text-gray-700 hover:bg-gray-50 rounded-lg px-3 py-1.5 text-sm">全部 · All</button></li>
+                <ul className="dropdown-content menu theme-aware backdrop-blur-sm rounded-xl z-20 min-w-36 p-2 shadow-lg border border-gray-100">
+                  <li><button onClick={() => setSelectedSub(null)} className="theme-aware-primary-color hover:bg-gray-50 rounded-lg px-3 py-1.5 text-sm">全部 · All</button></li>
                   {subCategories.map((sub) => (
-                    <li key={sub}><button onClick={() => setSelectedSub(sub)} className="text-gray-700 hover:bg-gray-50 rounded-lg px-3 py-1.5 text-sm">{sub}</button></li>
+                    <li key={sub}><button onClick={() => setSelectedSub(sub)} className="theme-aware-secondary-color hover:bg-gray-50 rounded-lg px-3 py-1.5 text-sm">{sub}</button></li>
                   ))}
                 </ul>
               </div>
@@ -121,15 +121,15 @@ export default function ProductList() {
                   <div
                     key={product.Id}
                     onClick={() => setSelectedProduct(product)}
-                    className={`group relative flex items-center justify-center aspect-square rounded-full border transition-all duration-300 cursor-pointer
-                      ${selectedProduct?.Id === product.Id ? "border-gray-800 bg-gray-50 shadow-md ring-1 ring-gray-400 ring-offset-2" : "border-gray-200 bg-white hover:border-gray-400 hover:shadow-sm"}`}
+                    className={`group relative flex items-center justify-center aspect-square border rounded-lg min-h-4 transition-all duration-300 cursor-pointer
+                      ${selectedProduct?.Id === product.Id ? " scale-110 " : "  "}`}
                   >
                     {product.IconImage ? (
                       <Image src={product.IconImage} alt={product.Title} width={40} height={40} className="object-contain transition-transform duration-300 group-hover:scale-105" />
                     ) : (
                       <div className="w-10 h-10 bg-gray-100 rounded-full" />
                     )}
-                    {selectedProduct?.Id === product.Id && <div className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-gray-700 rounded-full" />}
+                    {selectedProduct?.Id === product.Id && <div className="absolute -top-1 -right-1 w-2.5 h-2.5 theme-aware-reverse rounded-full" />}
                   </div>
                 ))}
               </div>
@@ -143,7 +143,7 @@ export default function ProductList() {
           </div>
 
           {/* Column 2: Main Product Image with Zoom Lens */}
-          <div className="bg-gray-50/50 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-200/60 p-6 flex items-center justify-center min-h-[400px]">
+          <div className="bg-white/50 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-200/60 p-6 flex items-center justify-center min-h-[400px]">
             {selectedProduct?.ImageUrl ? (
               <div
                 ref={imageContainerRef}

@@ -44,6 +44,12 @@ body {
   background-size: 24px 24px;
 }
 
+.bg-ink-paper-dark {
+  background-color: #a2acbd;
+  background-image: radial-gradient(circle at 25% 40%, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
 /* Animations */
 @keyframes fadeInUp {
   from {
@@ -64,7 +70,49 @@ body {
   background-color: white !important;
   color:#616161 !important;
 }
+
 [data-theme="dark"] .theme-aware {
-  background-color: #1F2937 !important;
+  background-color: #1E2939 !important;
   color: white !important;            
+} 
+
+[data-theme="light"] .theme-aware-background {
+  background-color: #faf8f2;
+  color: #1E2939;
+  background-image: radial-gradient(circle at 25% 40%, rgba(0,0,0,0.02) 1px, transparent 1px);
+  background-size: 24px 24px;        
 }
+
+[data-theme="dark"] .theme-aware-background {
+  background-color: #bac5d7;
+  color: white;
+  background-image: radial-gradient(circle at 25% 40%, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 24px 24px;      
+}
+/* -------------------------------------------------------- */
+[data-theme="light"] .theme-aware-primary-color {
+  color: #1E2939;
+}
+
+[data-theme="dark"] .theme-aware-primary-color {
+  color: white;
+}
+/* -------------------------------------------------------- */
+[data-theme="light"] .theme-aware-secondry-color {
+  color: #6a7282;
+}
+
+[data-theme="dark"] .theme-aware-secondry-color {
+  color: white;
+}
+/* -------------------------------------------------------- */
+[data-theme="light"] .theme-aware-reverse {
+  background-color: #1E2939;
+}
+
+[data-theme="dark"] .theme-aware-reverse {
+  background-color: white;
+}
+
+
+
