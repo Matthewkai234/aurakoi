@@ -75,7 +75,7 @@ export default function Buttons({ variant, content, product, onAddToCart, authty
           className={`
             group relative w-full py-3 px-4 rounded-full overflow-hidden
             transition-all duration-500 ease-out
-            ${!isOutOfStock ? "bg-gray-800 text-white hover:bg-black cursor-pointer" : "bg-gray-200 text-gray-400 cursor-not-allowed"}
+            ${!isOutOfStock ? "theme-aware-button hover:bg-black cursor-pointer" : "bg-gray-200 text-gray-400 cursor-not-allowed"}
           `}
         >
           <span className="relative z-10 flex items-center justify-center gap-2 text-sm tracking-wide">

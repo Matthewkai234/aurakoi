@@ -106,12 +106,30 @@ body {
   color: white;
 }
 /* -------------------------------------------------------- */
+[data-theme="light"] .theme-aware-secondry-background {
+  background-color: #1E2939;
+}
+
+[data-theme="dark"] .theme-aware-secondry-background {
+  background-color: white;
+}
+/* -------------------------------------------------------- */
 [data-theme="light"] .theme-aware-reverse {
   background-color: #1E2939;
 }
 
 [data-theme="dark"] .theme-aware-reverse {
   background-color: white;
+}
+
+[data-theme="light"] .theme-aware-button {
+  background-color: #1E2939;
+  color:white;
+}
+
+[data-theme="dark"] .theme-aware-button {
+  background-color: white;
+  color:#1E2939;
 }
 
 

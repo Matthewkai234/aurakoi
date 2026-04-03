@@ -143,7 +143,7 @@ export default function ProductList() {
           </div>
 
           {/* Column 2: Main Product Image with Zoom Lens */}
-          <div className="bg-white/50 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-200/60 p-6 flex items-center justify-center min-h-[400px]">
+          <div className="theme-aware backdrop-blur-sm rounded-2xl shadow-sm border border-gray-200/60 p-6 flex items-center justify-center min-h-[400px]">
             {selectedProduct?.ImageUrl ? (
               <div
                 ref={imageContainerRef}
@@ -182,27 +182,27 @@ export default function ProductList() {
           </div>
 
           {/* Column 3: Product Details */}
-          <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-200/60 p-6">
+          <div className="theme-aware backdrop-blur-sm rounded-2xl shadow-sm border border-gray-200/60 p-6">
             {selectedProduct ? (
               <div className="space-y-5">
                 <div className="relative">
                   <div className="absolute -top-1 left-0 w-8 h-px bg-gray-400" />
-                  <h2 className="text-2xl font-medium text-gray-800 pt-2 tracking-wide">{selectedProduct.Title}</h2>
+                  <h2 className="text-2xl font-medium theme-aware-primary-color pt-2 tracking-wide">{selectedProduct.Title}</h2>
                   <div className="w-12 h-0.5 bg-gray-300 mt-2" />
                 </div>
                 <div className="flex items-baseline gap-2">
-                  <span className="text-3xl font-light text-gray-800">¥{selectedProduct.Price?.toFixed(2) ?? "0.00"}</span>
+                  <span className="text-3xl font-light theme-aware-primary-color">¥{selectedProduct.Price?.toFixed(2) ?? "0.00"}</span>
                   <span className="text-xs text-gray-400 tracking-wider">水墨价</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
-                  <span className="text-gray-500">余量 · Stock</span>
-                  <span className={`px-2 py-0.5 rounded-full text-xs ${selectedProduct.Stock > 0 ? "bg-gray-100 text-gray-700" : "bg-gray-200 text-gray-500"}`}>
+                  <span className="theme-aware-secondary-color">余量 · Stock</span>
+                  <span className={`px-2 py-0.5 rounded-full text-xs ${selectedProduct.Stock > 0 ? " theme-aware-primary-color" : "theme-aware-primary-color"}`}>
                     {selectedProduct.Stock > 0 ? `${selectedProduct.Stock} 件` : "无货 · Out"}
                   </span>
                 </div>
                 {selectedProduct.Sizes && selectedProduct.Sizes.length > 0 && (
                   <div>
-                    <span className="text-xs text-gray-500 tracking-wide uppercase">尺码 · Sizes</span>
+                    <span className="text-xs theme-aware-secondary-color tracking-wide uppercase">尺码 · Sizes</span>
                     <div className="flex flex-wrap gap-2 mt-2">
                       {selectedProduct.Sizes.map((size) => (
                         <span key={size} className="px-3 py-1 text-xs border border-gray-300 rounded-full text-gray-600 bg-white/50">{size}</span>
@@ -211,8 +211,8 @@ export default function ProductList() {
                   </div>
                 )}
                 <div className="pt-2">
-                  <h3 className="text-xs text-gray-500 tracking-wide uppercase mb-2">墨韵 · Description</h3>
-                  <p className="text-gray-600 leading-relaxed text-sm font-light border-l-2 border-gray-200 pl-3">
+                  <h3 className="text-xs theme-aware-primary-color tracking-wide uppercase mb-2">墨韵 · Description</h3>
+                  <p className="theme-aware-secondary-color leading-relaxed text-sm font-light border-l-2 border-gray-200 pl-3">
                     {selectedProduct.Description || "无描述 · 静待缘人"}
                   </p>
                 </div>
