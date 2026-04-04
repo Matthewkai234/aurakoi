@@ -6,16 +6,10 @@ import { ShoppingCart, User, Languages, Home, Shirt, Store, ShoppingBag, UserCir
 import YinYangLogo from "../assets/yinyang.png";
 import Image from "next/image";
 import { Product } from "../../types/Iproduct";
-import { useRouter } from "next/navigation";
 
-export default function Navbar({ selectedCategory: propSelectedCategory, setSelectedCategory: propSetSelectedCategory }: { selectedCategory?: string, setSelectedCategory?: React.Dispatch<React.SetStateAction<string>> } = {}) {
+export default function Navbar() {
     const [language, setLanguage] = useState("en");
     const [categories, setCategories] = useState<string[]>([]);
-    const [localSelectedCategory, setLocalSelectedCategory] = useState<string>("All");
-    const router = useRouter()
-
-    const selectedCategory = propSelectedCategory ?? localSelectedCategory;
-    const setSelectedCategory = propSetSelectedCategory ?? setLocalSelectedCategory;
 
 
     useEffect(() => {
@@ -72,11 +66,11 @@ export default function Navbar({ selectedCategory: propSelectedCategory, setSele
                                 <Store size={20} />
                                 Store
                             </div>
-                            <ul tabIndex={-1} className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
-                                <li> <Link onClick={() => setSelectedCategory("All")} href="store" type="button">All</Link> </li>
+                            <ul tabIndex={-1} className="dropdown-content menu theme-aware rounded-box z-1 w-52 p-2 shadow-sm">
+                                <li> <Link href="/store?category=All">All</Link> </li>
                                 {categories.map((cat, i) => (
                                     <li key={i}>
-                                        <Link onClick={() => setSelectedCategory(cat)} href="/store" type="button">
+                                        <Link href={`/store?category=${cat}`}>
                                             {cat}
                                         </Link>
                                     </li>

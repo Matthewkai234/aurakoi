@@ -4,13 +4,49 @@ import React, { useState } from "react";
 import { Mail, Lock, User, Sparkles, LogIn, UserPlus, Eye, EyeOff } from "lucide-react";
 import InputField from "./inputFields";
 import Buttons from "./buttons";
+import { supabase } from "@/lib/supabaseClient";
 
 export default function AuthPage() {
     const [mode, setMode] = useState<"login" | "signup">("login")
+    const [errorMessage, setErrorMessage] = useState<string>("");
+    const [loading, setLoading] = useState<boolean>(false);
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [fullName, setFullName] = useState("");
+    const [username, setUsername] = useState("");
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setErrorMessage("");
+        setLoading(true);
         console.log(`${mode} form submitted`);
+        try {
+            if (mode === "signup") {
+
+                const { data, error } = await supabase.auth.signUp({
+                    email,
+                    password,
+                });
+
+                if (error) throw error;
+
+                console.log("Signup successful:", data);
+            } else {
+
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email,
+                    password,
+                });
+
+                if (error) throw error;
+
+                console.log("Login successful:", data);
+            }
+        } catch (error: any) {
+            setErrorMessage(error.message);
+        } finally {
+            setLoading(false);
+        }
     };
 
     const toggleMode = () => {
@@ -50,7 +86,7 @@ export default function AuthPage() {
                                     className="text-2xl font-light tracking-wide font-serif transition-colors duration-500 theme-aware-primary-color">
                                     {mode === "login" ? "登录 · Sign In" : "注册 · Sign Up"}
                                 </h2>
-                                <div className="w-12 h-px mt-2 transition-colors duration-500"/>
+                                <div className="w-12 h-px mt-2 transition-colors duration-500" />
                             </div>
 
                             <form onSubmit={handleSubmit} className="space-y-5">
@@ -58,6 +94,9 @@ export default function AuthPage() {
                                     <InputField
                                         variant="text"
                                         placeholder="姓名 · Full Name"
+                                        value={fullName}
+                                        onChange={(e) => setFullName(e.target.value)}
+
                                     />
                                 )}
 
@@ -65,18 +104,23 @@ export default function AuthPage() {
                                     <InputField
                                         variant="text"
                                         placeholder="姓名 · Username"
+                                        value={username}
+                                        onChange={(e) => setUsername(e.target.value)}
                                     />
                                 )}
 
                                 <InputField
                                     variant="email"
                                     placeholder="电子邮箱 · Email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
                                 />
 
-                                {/* Password */}
                                 <InputField
                                     variant="password"
                                     placeholder="密码 · Password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
                                 />
 
                                 {mode === "login" && (
@@ -91,6 +135,9 @@ export default function AuthPage() {
                                 )}
                                 <Buttons variant="Auth" authtype={mode} />
                             </form>
+                            {errorMessage && <p className="text-red-500 text-sm mt-2">{errorMessage}</p>}
+                            {loading && <p className="text-gray-500 text-sm mt-2">Processing...</p>}
+                            
 
                             <div className="mt-6 text-center">
                                 <button

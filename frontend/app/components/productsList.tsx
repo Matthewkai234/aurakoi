@@ -4,24 +4,25 @@ import Image from "next/image";
 import { SlidersHorizontal, Sparkles } from "lucide-react";
 import Buttons from "./buttons";
 import { Product } from "../../types/Iproduct";
+import { useSearchParams } from "next/navigation";
 
-export default function ProductList({ category }: { category: string }) {
+export default function ProductList() {
   const [products, setProducts] = useState<Product[]>([]);
   const [subCategories, setSubCategories] = useState<string[]>([]);
   const [selectedSub, setSelectedSub] = useState<string | null>(null);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
-  // Zoom lens state
   const [zoomActive, setZoomActive] = useState<boolean>(false);
   const [zoomPosition, setZoomPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const imageContainerRef = useRef<HTMLDivElement>(null);
 
-  // Fetch products on mount
+  const searchParams = useSearchParams();
+  const category = searchParams.get("category") || "All";
+
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const url = category === "All" ? "/api/products/" : `/api/products/category/${category}`;
-        const res = await fetch(url);
+        const res = category.toLowerCase() === "all" ? await fetch("/api/products") : await fetch(`/api/products/category/${category}`);
         const data: Product[] = await res.json();
         setProducts(data);
 
@@ -59,15 +60,11 @@ export default function ProductList({ category }: { category: string }) {
     }
   }, [filtered, selectedProduct]);
 
-  // Async add to cart handler – replace with real API call or cart context dispatch
   const addToCart = useCallback(async (product: Product) => {
-    // Simulate network delay
     await new Promise((resolve) => setTimeout(resolve, 500));
     console.log(`Added ${product.Title} to cart`);
-    // Here you would call your cart API or update global state
   }, []);
 
-  // Zoom lens mouse move handler
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     if (!imageContainerRef.current) return;
     const rect = imageContainerRef.current.getBoundingClientRect();

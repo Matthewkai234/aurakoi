@@ -26,6 +26,7 @@ export default function Buttons({ variant, content, product, onAddToCart, authty
       <div>
         <button
           type="submit"
+
           className="group overflow-hidden ease-out relative w-full py-3 rounded-full font-medium flex items-center justify-center gap-2 theme-aware-button cursor-pointer transition-all duration-300 transition-all shadow-sm"
         >
           <span className="relative z-10 flex items-center gap-2">
