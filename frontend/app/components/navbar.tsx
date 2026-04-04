@@ -8,11 +8,14 @@ import Image from "next/image";
 import { Product } from "../../types/Iproduct";
 import { useRouter } from "next/navigation";
 
-export default function Navbar() {
+export default function Navbar({ selectedCategory: propSelectedCategory, setSelectedCategory: propSetSelectedCategory }: { selectedCategory?: string, setSelectedCategory?: React.Dispatch<React.SetStateAction<string>> } = {}) {
     const [language, setLanguage] = useState("en");
     const [categories, setCategories] = useState<string[]>([]);
-    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+    const [localSelectedCategory, setLocalSelectedCategory] = useState<string>("All");
     const router = useRouter()
+
+    const selectedCategory = propSelectedCategory ?? localSelectedCategory;
+    const setSelectedCategory = propSetSelectedCategory ?? setLocalSelectedCategory;
 
 
     useEffect(() => {
@@ -70,12 +73,12 @@ export default function Navbar() {
                                 Store
                             </div>
                             <ul tabIndex={-1} className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
-                                <li> <button onClick={() => setSelectedCategory(null)}>All</button> </li>
+                                <li> <Link onClick={() => setSelectedCategory("All")} href="store" type="button">All</Link> </li>
                                 {categories.map((cat, i) => (
                                     <li key={i}>
-                                        <button onClick={() => setSelectedCategory(cat)}>
+                                        <Link onClick={() => setSelectedCategory(cat)} href="/store" type="button">
                                             {cat}
-                                        </button>
+                                        </Link>
                                     </li>
                                 ))}
                             </ul>

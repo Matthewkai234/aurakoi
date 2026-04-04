@@ -98,20 +98,20 @@ body {
   color: white;
 }
 /* -------------------------------------------------------- */
-[data-theme="light"] .theme-aware-secondry-color {
+[data-theme="light"] .theme-aware-secondary-color {
   color: #6a7282;
 }
 
-[data-theme="dark"] .theme-aware-secondry-color {
+[data-theme="dark"] .theme-aware-secondary-color {
   color: white;
 }
 /* -------------------------------------------------------- */
-[data-theme="light"] .theme-aware-secondry-background {
-  background-color: #1E2939;
+[data-theme="light"] .theme-aware-secondary-background {
+  background-color: #1E2939 !important;
 }
 
-[data-theme="dark"] .theme-aware-secondry-background {
-  background-color: white;
+[data-theme="dark"] .theme-aware-secondary-background {
+  background-color: white !important;
 }
 /* -------------------------------------------------------- */
 [data-theme="light"] .theme-aware-reverse {
@@ -132,5 +132,12 @@ body {
   color:#1E2939;
 }
 
+[data-theme="light"] .theme-aware-overlay {
+  background: linear-gradient(to right, #374151, #000000) !important; /* gray-700 → black */
+}
+
+[data-theme="dark"] .theme-aware-overlay {
+  background: linear-gradient(to right, #ffffff22, #302b2b55) !important; /* soft white glow */
+}
 
 

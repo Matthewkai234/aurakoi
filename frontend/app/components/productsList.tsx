@@ -5,7 +5,7 @@ import { SlidersHorizontal, Sparkles } from "lucide-react";
 import Buttons from "./buttons";
 import { Product } from "../../types/Iproduct";
 
-export default function ProductList() {
+export default function ProductList({ category }: { category: string }) {
   const [products, setProducts] = useState<Product[]>([]);
   const [subCategories, setSubCategories] = useState<string[]>([]);
   const [selectedSub, setSelectedSub] = useState<string | null>(null);
@@ -16,13 +16,12 @@ export default function ProductList() {
   const [zoomPosition, setZoomPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const imageContainerRef = useRef<HTMLDivElement>(null);
 
-  const category = "Supplement";
-
   // Fetch products on mount
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const res = await fetch(`/api/products/category/${category}`);
+        const url = category === "All" ? "/api/products/" : `/api/products/category/${category}`;
+        const res = await fetch(url);
         const data: Product[] = await res.json();
         setProducts(data);
 
@@ -43,7 +42,6 @@ export default function ProductList() {
     fetchProducts();
   }, [category]);
 
-  // Memoize filtered products
   const filtered = useMemo(() => {
     if (selectedSub) {
       return products.filter(
@@ -53,7 +51,6 @@ export default function ProductList() {
     return products;
   }, [products, selectedSub]);
 
-  // Update selected product when filtered list changes
   useEffect(() => {
     if (selectedProduct && !filtered.some((p) => p.Id === selectedProduct.Id)) {
       setSelectedProduct(filtered[0] || null);
@@ -85,13 +82,13 @@ export default function ProductList() {
         {/* Page Title */}
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-3 px-6 py-2 border-b border-gray-300">
-            <Sparkles className="w-4 h-4 theme-aware-secondry-color" />
+            <Sparkles className="w-4 h-4 theme-aware-secondary-color" />
             <h1 className="text-3xl md:text-4xl font-light tracking-wide font-serif">
               {category}
             </h1>
-            <div className="w-6 h-px theme-aware-secondry-background rotate-12" />
+            <div className="w-6 h-px theme-aware-secondary-background rotate-12" />
           </div>
-          <p className="theme-aware-secondry-color text-sm mt-4 font-light italic">水墨·阴阳·自然之选</p>
+          <p className="theme-aware-secondary-color text-sm mt-4 font-light italic">水墨·阴阳·自然之选</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

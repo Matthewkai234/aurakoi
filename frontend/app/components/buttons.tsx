@@ -23,22 +23,28 @@ export default function Buttons({ variant, content, product, onAddToCart, authty
 
   if (variant === "Auth") {
     return (
-      <button
-        type="submit"
-        className="w-full py-3 rounded-full font-medium flex items-center justify-center gap-2 bg-gray-800 text-white cursor-pointer transition-all duration-300 tracking-wide hover:bg-gray-700 shadow-sm"
-      >
-        {authtype === "login" ? (
-          <>
-            <LogIn className="w-4 h-4" />
-            登录 · Sign In
-          </>
-        ) : (
-          <>
-            <UserPlus className="w-4 h-4" />
-            创建账户 · Create Account
-          </>
-        )}
-      </button>
+      <div>
+        <button
+          type="submit"
+          className="group overflow-hidden ease-out relative w-full py-3 rounded-full font-medium flex items-center justify-center gap-2 theme-aware-button cursor-pointer transition-all duration-300 transition-all shadow-sm"
+        >
+          <span className="relative z-10 flex items-center gap-2">
+            {authtype === "login" ? (
+              <>
+                <LogIn className="w-4 h-4" />
+                登录 · Sign In
+              </>
+            ) : (
+              <>
+                <UserPlus className="w-4 h-4" />
+                创建账户 · Create Account
+              </>
+            )}
+          </span>
+
+          <div className="absolute inset-0 -translate-x-full group-hover:translate-x-0 transition-transform duration-500 theme-aware-overlay" />
+        </button>
+      </div>
     );
   }
 
@@ -93,8 +99,7 @@ export default function Buttons({ variant, content, product, onAddToCart, authty
           </span>
           {/* Ink wash hover effect */}
           {!isOutOfStock && (
-            <div className="absolute inset-0 -translate-x-full group-hover:translate-x-0 transition-transform duration-500 bg-gradient-to-r from-gray-700 to-black" />
-          )}
+            <div className="absolute inset-0 -translate-x-full group-hover:translate-x-0 transition-transform duration-500 theme-aware-overlay" />)}
         </button>
 
         {/* Message displayed below the button */}
