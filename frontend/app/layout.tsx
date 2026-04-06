@@ -4,6 +4,11 @@ import "./globals.css";
 import { Aldrich } from "next/font/google";
 import ThemeFab from "./components/themeFab";
 import Footer from "./components/footer";
+import Navbar from "./components/navbar";
+import LiveWallpaper from "./components/liveWallpaper";
+import Preloader from "./components/preloader";
+import { PreloaderProvider } from "./contexts/PreloaderContext";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,6 +35,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html
       data-theme="light"
@@ -37,9 +43,14 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className={`${aldrich.className} min-h-full flex flex-col`}>
+        <PreloaderProvider>
+          <Preloader />
+          <LiveWallpaper/>
+          <Navbar/>
           {children}
           <Footer />
           <ThemeFab />
+        </PreloaderProvider>
       </body>
     </html>
   );

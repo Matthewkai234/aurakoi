@@ -4,62 +4,66 @@ import React, { useState } from "react";
 import { Mail, Lock, User, Sparkles, LogIn, UserPlus, Eye, EyeOff } from "lucide-react";
 import InputField from "./inputFields";
 import Buttons from "./buttons";
-import Preloader from "./preloader";
 import { supabase } from "@/lib/supabaseClient";
 import Router from "next/router";
 import { useRouter } from "next/navigation";
+import { usePreloader } from "../contexts/PreloaderContext";
 export default function AuthPage() {
     const [mode, setMode] = useState<"login" | "signup">("login")
     const [errorMessage, setErrorMessage] = useState<string>("");
-    const [loading, setLoading] = useState<boolean>(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [fullName, setFullName] = useState("");
     const [username, setUsername] = useState("");
     const router = useRouter();
+    const { startLoading } = usePreloader();
 
 
-const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setErrorMessage("");
-    setLoading(true);
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setErrorMessage("");
+        startLoading();
 
-    const startTime = Date.now(); // ⏱ start timer
+        try {
+            if (mode === "signup") {
+                const { data: authData, error: authError } = await supabase.auth.signUp({
+                    email,
+                    password,
+                    options: {
+                        data: {
+                            full_name: fullName,
+                            username: username,
+                        }
+                    }
+                });
 
-    try {
-        if (mode === "signup") {
-            const { data, error } = await supabase.auth.signUp({
-                email,
-                password,
-            });
 
-            if (error) throw error;
 
-            console.log("Signup successful:", data);
-        } else {
-            const { data, error } = await supabase.auth.signInWithPassword({
-                email,
-                password,
-            });
+                if (authError) throw authError;
 
-            if (error) throw error;
+                const user = authData.user;
+                if (!user) throw new Error("User not returned after signup");
 
-            console.log("Login successful:", data);
+                console.log("Signup successful, profile will be created by trigger");
+
+            } else {
+                const { data: loginData, error: loginError } = await supabase.auth.signInWithPassword({
+                    email,
+                    password,
+                });
+
+                if (loginError) throw loginError;
+
+                console.log("Login successful:", loginData);
+            }
+
+            router.push("/");
+
+        } catch (error: any) {
+            setErrorMessage(error.message);
+            console.error(error);
         }
-    } catch (error: any) {
-        setErrorMessage(error.message);
-    } finally {
-        const elapsed = Date.now() - startTime;
-        const remainingTime = 5000 - elapsed;
-
-        if (remainingTime > 0) {
-            await new Promise((res) => setTimeout(res, remainingTime));
-        }
-
-        setLoading(false);
-        router.push("/");
-    }
-};
+    };
 
     const toggleMode = () => {
         setMode(mode === "login" ? "signup" : "login");
@@ -148,9 +152,6 @@ const handleSubmit = async (e: React.FormEvent) => {
                                 <Buttons variant="Auth" authtype={mode} />
                             </form>
                             {errorMessage && <p className="text-red-500 text-sm mt-2">{errorMessage}</p>}
-                            {loading && <p className="text-gray-500 text-sm mt-2">Processing...</p>}
-                            
-
                             <div className="mt-6 text-center">
                                 <button
                                     onClick={toggleMode}
@@ -174,8 +175,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                         </div>
                     </div>
 
-                    {/* Additional decorative yin yang swirl */}
-                    <div className="flex justify-center mt-8">
+                    <div className="flex justify-center mt-4">
                         <div className="w-8 h-8 rounded-full border border-gray-300/40 flex items-center justify-center">
                             <div
                                 className="
@@ -185,11 +185,11 @@ const handleSubmit = async (e: React.FormEvent) => {
                     </div>
                 </div>
 
-                <div className="text-center mt-12 text-[10px] text-gray-400 tracking-widest">
+                <div className="text-center mt-8 text-[10px] text-gray-400 tracking-widest">
                     水墨之间 · 自有乾坤
                 </div>
             </div>
-            <Preloader loading={loading} />
+
         </div>
     );
 }

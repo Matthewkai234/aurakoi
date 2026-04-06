@@ -2,15 +2,18 @@
 
 import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
-import { ShoppingCart, User, Languages, Home, Shirt, Store, ShoppingBag, UserCircle, User2, UserCheck, ImageDown } from "lucide-react";
+import { ShoppingCart, Languages, Home, Shirt, Store, ShoppingBag, UserCircle, User2, UserCheck, ImageDown, User as UserIcon, LogOut, LogIn } from "lucide-react";
 import YinYangLogo from "../assets/yinyang.png";
 import Image from "next/image";
 import { Product } from "../../types/Iproduct";
+import { supabase } from "@/lib/supabaseClient";
+import type { User } from "@supabase/supabase-js";
+
 
 export default function Navbar() {
     const [language, setLanguage] = useState("en");
     const [categories, setCategories] = useState<string[]>([]);
-
+    const [user, setUser] = useState<User | null>(null);
 
     useEffect(() => {
         async function fetchCategories() {
@@ -23,7 +26,20 @@ export default function Navbar() {
         fetchCategories();
 
     }, []);
-    useEffect(() => { console.log(categories); }, [categories])
+
+    useEffect(() => {
+        const getUser = async () => {
+            const { data: { user } } = await supabase.auth.getUser();
+            setUser(user);
+        };
+        getUser();
+
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+            setUser(session?.user ?? null);
+        });
+
+        return () => subscription.unsubscribe();
+    }, []);
 
 
     const toggleLanguage = () => {
@@ -31,8 +47,9 @@ export default function Navbar() {
         console.log("Language toggled to", language === "en" ? "he" : "en");
     };
 
-
-
+    const handleLogout = async () => {
+        await supabase.auth.signOut();
+    };
 
     return (
         <nav className="theme-aware shadow-md px-4 py-2 sticky z-30 opacity-90 " >
@@ -67,7 +84,7 @@ export default function Navbar() {
                                 Store
                             </div>
                             <ul tabIndex={-1} className="dropdown-content menu theme-aware rounded-box z-1 w-52 p-2 shadow-sm">
-                                <li> <Link href="/store?category=All">All</Link> </li>
+                                <li> <Link href="/store?category=All" type="button">All</Link> </li>
                                 {categories.map((cat, i) => (
                                     <li key={i}>
                                         <Link href={`/store?category=${cat}`}>
@@ -111,13 +128,28 @@ export default function Navbar() {
                         </div>
                     </div>
 
-                    <div className="relative">
+                    <div className="relative ">
                         <div className="dropdown dropdown-start">
-                            <div tabIndex={0} role="button" className="flex items-center space-x-1 p-2 hover:text-blue-600 transition cursor-pointer">
-                                <User size={24} />
+                            <div tabIndex={0} role="button" className="flex items-center justify-center  hover:text-blue-600 transition cursor-pointer">
+                                {user ? (
+                                    <div className=" flex items-center">
+                                            <div className="w-7 h-7 rounded-full border-2 theme-aware-background  flex items-center justify-center text-sm font-bold text-white">
+                                                {(user.user_metadata?.full_name || user.email?.split('@')[0] || 'U').charAt(0).toUpperCase()}
+                                            </div>
+                                    </div>
+                                ) : (
+                                    <UserIcon size={25} />
+                                )}
                             </div>
-                            <ul tabIndex={-1} className="dropdown-content menu theme-aware rounded-box z-1 w-52 p-2 shadow-sm">
-                                <li><Link type="button" href="/auth"> <User size={20} /> Login</Link></li>
+                            <ul tabIndex={-1} className="dropdown-content menu theme-aware rounded-box z-1 w-50  shadow-sm">
+                                {user ? (
+                                    <>
+                                        <li><Link href="/profile"><UserIcon size={20} /> Profile</Link></li>
+                                        <li><button onClick={handleLogout}><LogOut size={20} /> Logout</button></li>
+                                    </>
+                                ) : (
+                                    <li><Link href="/auth"><LogIn size={20} /> Login</Link></li>
+                                )}
                             </ul>
                         </div>
                     </div>
@@ -131,6 +163,7 @@ export default function Navbar() {
                     </button>
                 </div>
             </div>
+            
         </nav>
     );
 }

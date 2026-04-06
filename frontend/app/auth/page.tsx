@@ -10,11 +10,7 @@ import AuthPage from "../components/auth";
 export default function Home() {
   return (
     <>
-    <LiveWallpaper/>
-    <div className="relative z-20">
-    <Navbar />
     <AuthPage/>
-    </div>
     </>
   );
 }

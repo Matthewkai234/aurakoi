@@ -7,11 +7,7 @@ export default function Store() {
     return (
         <>
 
-        <LiveWallpaper/>
-            <Navbar />
-            <div className='flex w-full items-center justify-center'>
                     <ProductList />
-            </div>
 
         </>
 

@@ -71,6 +71,7 @@ namespace Backend.Controllers
             var response = await _supabase
                 .From<Product>()
                 .Where(p => p.Category == category)
+                .Select("*")
                 .Get();
             var products = response.Models.Select(p => new ProductDto
             {
@@ -95,6 +96,7 @@ namespace Backend.Controllers
             var response = await _supabase
                 .From<Product>()
                 .Where(p => p.SubCategory == subCategory)
+                .Select("*")
                 .Get();
 
             var products = response.Models.Select(p => new ProductDto
