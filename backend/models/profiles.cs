@@ -14,5 +14,8 @@ namespace Backend.Models
 
         [Column("full_name")]
         public string FullName { get; set; } = "";
+
+        [Column("user_confirmed")]
+        public bool UserConfirmed { get; set; } = false;
     }
 }

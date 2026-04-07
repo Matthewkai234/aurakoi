@@ -4,8 +4,8 @@ import React, { useState } from "react";
 import { Mail, Lock, User, Sparkles, LogIn, UserPlus, Eye, EyeOff } from "lucide-react";
 import InputField from "./inputFields";
 import Buttons from "./buttons";
+import ConfirmEmail from "./confirmEmail";
 import { supabase } from "@/lib/supabaseClient";
-import Router from "next/router";
 import { useRouter } from "next/navigation";
 import { usePreloader } from "../contexts/PreloaderContext";
 export default function AuthPage() {
@@ -15,9 +15,13 @@ export default function AuthPage() {
     const [password, setPassword] = useState("");
     const [fullName, setFullName] = useState("");
     const [username, setUsername] = useState("");
+    const [userNotConfirmed, setUserNotConfirmed] = useState<boolean>(false);
+    const [confirmSending, setConfirmSending] = useState<boolean>(false);
+    const [confirmMessage, setConfirmMessage] = useState<string>("");
     const router = useRouter();
     const { startLoading } = usePreloader();
 
+    
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -36,16 +40,15 @@ export default function AuthPage() {
                         }
                     }
                 });
-
-
-
                 if (authError) throw authError;
 
                 const user = authData.user;
                 if (!user) throw new Error("User not returned after signup");
 
-                console.log("Signup successful, profile will be created by trigger");
-
+                        console.log("Signup successful, profile will be created by trigger");
+                setUserNotConfirmed(true);
+                setConfirmMessage("Confirmation email is ready to send.");
+                return;
             } else {
                 const { data: loginData, error: loginError } = await supabase.auth.signInWithPassword({
                     email,
@@ -55,14 +58,36 @@ export default function AuthPage() {
                 if (loginError) throw loginError;
 
                 console.log("Login successful:", loginData);
+                router.push("/");
             }
-
-            router.push("/");
 
         } catch (error: any) {
             setErrorMessage(error.message);
             console.error(error);
         }
+    };
+
+    const handleSendConfirmationEmail = async () => {
+        if (!email) return;
+        setConfirmSending(true);
+        setConfirmMessage("");
+        try {
+            const response = await fetch("/api/ConfirmEmail", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email }),
+            });
+
+            if (!response.ok) {
+                const data = await response.json();
+                setConfirmMessage(data?.message || "Failed to send confirmation email.");
+            } else {
+                setConfirmMessage("Confirmation email sent. Check your inbox.");
+            }
+        } catch (error) {
+            setConfirmMessage("Unable to send confirmation email. Try again.");
+        }
+        setConfirmSending(false);
     };
 
     const toggleMode = () => {
@@ -71,6 +96,12 @@ export default function AuthPage() {
 
     return (
         <div className="relative min-h-screen w-full overflow-x-hidden bg-ink-paper opacity-90 z-20 theme-aware-background">
+            <ConfirmEmail
+                userNotConfirmed={userNotConfirmed}
+                onSendConfirmationEmail={handleSendConfirmationEmail}
+                isSending={confirmSending}
+                message={confirmMessage}
+            />
             <div className="container mx-auto px-4 py-12 md:py-16 relative z-10">
 
                 <div className="text-center mb-12">
@@ -189,6 +220,8 @@ export default function AuthPage() {
                     水墨之间 · 自有乾坤
                 </div>
             </div>
+
+ 
 
         </div>
     );

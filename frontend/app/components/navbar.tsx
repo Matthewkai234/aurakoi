@@ -56,7 +56,7 @@ export default function Navbar() {
             <div className=" container mx-auto flex items-center justify-between  ">
                 <div className="flex-shrink-0">
                     <Link href="/">
-                        <Image
+                        <Image 
                             src={YinYangLogo}
                             alt="Gymix Logo"
                             width={70}

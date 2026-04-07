@@ -104,6 +104,10 @@ body {
 
 [data-theme="dark"] .theme-aware-secondary-color {
   color: white;
+} 
+
+[data-theme="dark"] .theme-aware-secondary-text-color {
+  color: rgb(133, 139, 175);
 }
 /* -------------------------------------------------------- */
 [data-theme="light"] .theme-aware-secondary-background {

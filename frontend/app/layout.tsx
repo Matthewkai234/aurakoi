@@ -1,3 +1,4 @@
+
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -8,6 +9,8 @@ import Navbar from "./components/navbar";
 import LiveWallpaper from "./components/liveWallpaper";
 import Preloader from "./components/preloader";
 import { PreloaderProvider } from "./contexts/PreloaderContext";
+import ConfirmEmail from "./components/confirmEmail";
+
 
 
 const geistSans = Geist({
@@ -46,6 +49,7 @@ export default function RootLayout({
         <PreloaderProvider>
           <Preloader />
           <LiveWallpaper/>
+          <ConfirmEmail userConfirmed={false} />
           <Navbar/>
           {children}
           <Footer />

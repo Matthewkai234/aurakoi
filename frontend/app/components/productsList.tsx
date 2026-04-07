@@ -119,7 +119,7 @@ export default function ProductList() {
                       ${selectedProduct?.Id === product.Id ? " scale-110 " : "  "}`}
                   >
                     {product.IconImage ? (
-                      <Image src={product.IconImage} alt={product.Title} width={40} height={40} className="object-contain transition-transform duration-300 group-hover:scale-105" />
+                      <Image src={product.IconImage} alt={product.Title} width={40} height={40} style={{ width: 'auto', height: '40px' }} className="object-contain transition-transform duration-300 group-hover:scale-105" />
                     ) : (
                       <div className="w-10 h-10 bg-gray-100 rounded-full" />
                     )}
