@@ -14,7 +14,7 @@ namespace Backend.Controllers
     public class ConfirmEmailController : ControllerBase
     {
         private readonly Client _supabase;
-        private readonly string secretKey = "replace_with_secure_random_key"; // use env var in production
+        private readonly string secretKey = "replace_with_secure_random_key";
 
         public ConfirmEmailController(Client supabase)
         {
@@ -32,7 +32,6 @@ namespace Backend.Controllers
                 if (!Guid.TryParse(request.Id, out var userId))
                     return BadRequest(new { message = "Invalid user ID format." });
 
-                // Verify user exists
                 var user = await _supabase
                     .From<User>()
                     .Where(x => x.Id == userId)
@@ -41,10 +40,8 @@ namespace Backend.Controllers
                 if (user == null)
                     return NotFound(new { message = "User not found." });
 
-                // Generate token with user ID
                 var token = GenerateToken(userId, TimeSpan.FromHours(1));
 
-                // Send confirmation email with token
                 await SendConfirmationEmailAsync(request.Email, token);
 
                 return Ok(new { message = "Confirmation email sent successfully." });
@@ -66,7 +63,7 @@ namespace Backend.Controllers
                 var userId = ValidateToken(token);
                 if (userId == Guid.Empty)
                     return BadRequest(new { message = "Invalid or expired token." });
-
+                Console.WriteLine(userId);
                 var user = await _supabase
                     .From<User>()
                     .Where(x => x.Id == userId)
@@ -76,10 +73,12 @@ namespace Backend.Controllers
                     return NotFound(new { message = "User not found." });
 
                 user.UserConfirmed = true;
-                await _supabase
-                    .From<User>()
-                    .Update(user);
 
+                await _supabase
+                .From<User>()
+                .Where(x => x.Id == userId)
+                .Set(x => x.UserConfirmed, true)
+                .Update();
                 return Ok(new { message = "Email confirmed successfully!" });
             }
             catch (Exception ex)
@@ -209,7 +208,7 @@ If you didn't create an account, please ignore this email.
 
     public class ConfirmEmailRequest
     {
-        public string Id {get;set;} = string.Empty;
+        public string Id { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
 
     }

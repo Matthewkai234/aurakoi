@@ -1,6 +1,7 @@
 'use client'
 import { supabase } from "@/lib/supabaseClient";
 import Buttons from "./buttons";
+import { usePreloader } from "../contexts/PreloaderContext";
 
 type ConfirmEmailProps = {
     userConfirmed: boolean;
@@ -8,7 +9,6 @@ type ConfirmEmailProps = {
 
 
 const sendConfirmationEmail = async () => {
-    // console.log("hi")
     const {
         data: {
             user
@@ -31,6 +31,8 @@ const sendConfirmationEmail = async () => {
 
 
 export default function ConfirmEmail({ userConfirmed }: ConfirmEmailProps) {
+        const { startLoading } = usePreloader();
+    
     if (userConfirmed) return null;
     return (
         <div className=" flex text-center items-center justify-center top-0 left-0 w-full text-center py-2 z-20 theme-aware-background space-x-2">
