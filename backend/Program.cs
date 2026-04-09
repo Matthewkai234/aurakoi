@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 // var key = Environment.GetEnvironmentVariable("SUPABASE_KEY");
 
 var url="https://cgtmywcpoldeskhgejpf.supabase.co";
-var key="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNndG15d2Nwb2xkZXNraGdlanBmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ4OTAwODUsImV4cCI6MjA5MDQ2NjA4NX0.P3_FZJY0aOaMuNr6UKYaCR_zlQgj3CrPhJ2UKGtdQr0";
+var key="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNndG15d2Nwb2xkZXNraGdlanBmIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NDg5MDA4NSwiZXhwIjoyMDkwNDY2MDg1fQ.e9BsE-2zLHcAVICkeOvB8uIIUWNSKy8vfoDMZBtCaoQ";
 
 
 var options = new Supabase.SupabaseOptions 

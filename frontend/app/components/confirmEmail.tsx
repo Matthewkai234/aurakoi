@@ -1,46 +1,72 @@
-'use client'
+'use client';
+import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
-import Buttons from "./buttons";
-import { usePreloader } from "../contexts/PreloaderContext";
+import { useAuth } from "./authProvider";
+import toast, { Toaster } from "react-hot-toast";
 
-type ConfirmEmailProps = {
-    userConfirmed: boolean;
-};
+export default function ConfirmEmail() {
+  const { user } = useAuth();
+  const [userConfirmed, setUserConfirmed] = useState<boolean | null>(null);
 
+  useEffect(() => {
+    if (!user) return;
 
-const sendConfirmationEmail = async () => {
-    const {
-        data: {
-            user
+    const fetchUserConfirmed = async () => {
+      try {
+        const res = await fetch(`/api/profiles/${user.id}`);
+        if (res.ok) {
+          const data = await res.json();
+          setUserConfirmed(!!data.UserConfirmed);
+          console.log("Fetched userConfirmed:", data.UserConfirmed);
+        } else {
+          console.error("Failed to fetch confirmation status", res.status);
         }
-    } = await supabase.auth.getUser()
-    if (user && user.email) {
-        const res = await fetch("/api/ConfirmEmail", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                id: user.id,
-                email: user.email,
-            }),
-        });
-        console.log(await res.json());
+      } catch (err) {
+        console.error("Error fetching confirmation status", err);
+      }
+    };
+
+    fetchUserConfirmed();
+  }, [user]);
+
+  const sendConfirmationEmail = async () => {
+    if (!user || !user.email) return;
+
+    const loadingToast = toast.loading("Sending confirmation email...");
+
+    try {
+      const res = await fetch("/api/ConfirmEmail", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: user.id, email: user.email }),
+      });
+
+      const data = await res.json();
+      if (res.ok) toast.success("Confirmation email sent!", { id: loadingToast });
+      else toast.error(data.message || "Failed to send email", { id: loadingToast });
+    } catch (err) {
+      toast.error("An error occurred. Check your connection.", { id: loadingToast });
     }
-}
+  };
 
+  // Only render if user is logged in and NOT confirmed
+  if (!user || userConfirmed === null || userConfirmed) return null;
 
-export default function ConfirmEmail({ userConfirmed }: ConfirmEmailProps) {
-        const { startLoading } = usePreloader();
-    
-    if (userConfirmed) return null;
-    return (
-        <div className=" flex text-center items-center justify-center top-0 left-0 w-full text-center py-2 z-20 theme-aware-background space-x-2">
-            <p> A confirmation email has been sent to your email</p>
-            <button className="flex cursor-pointer theme-aware-secondary-text-color text-sm underline "
-                onClick={sendConfirmationEmail}
-            > Send Email
-            </button>
-        </div>
-    );
+  return (
+    <div className="flex justify-center items-center w-full py-2 theme-aware-background space-x-2 z-40">
+      <p>You have not confirmed your email yet.</p>
+      <button
+        className="text-sm underline theme-aware-secondary-text-color cursor-pointer"
+        onClick={sendConfirmationEmail}
+      >
+        Send Email
+      </button>
+
+      <Toaster
+        position="top-center"
+        toastOptions={{ className: "theme-aware-toast", duration: 3000 }}
+        
+      />
+    </div>
+  );
 }

@@ -32,13 +32,13 @@ namespace Backend.Controllers
                 if (!Guid.TryParse(request.Id, out var userId))
                     return BadRequest(new { message = "Invalid user ID format." });
 
-                var user = await _supabase
-                    .From<User>()
+                var profile = await _supabase
+                    .From<Profile>()
                     .Where(x => x.Id == userId)
                     .Single();
 
-                if (user == null)
-                    return NotFound(new { message = "User not found." });
+                if (profile == null)
+                    return NotFound(new { message = "Profile not found." });
 
                 var token = GenerateToken(userId, TimeSpan.FromHours(1));
 
@@ -64,21 +64,26 @@ namespace Backend.Controllers
                 if (userId == Guid.Empty)
                     return BadRequest(new { message = "Invalid or expired token." });
                 Console.WriteLine(userId);
-                var user = await _supabase
-                    .From<User>()
+                var profile = await _supabase
+                    .From<Profile>()
                     .Where(x => x.Id == userId)
                     .Single();
 
-                if (user == null)
-                    return NotFound(new { message = "User not found." });
+                if (profile is null)
+                    return NotFound(new { message = "Profile not found." });
 
-                user.UserConfirmed = true;
+                profile.UserConfirmed = true;
 
-                await _supabase
-                .From<User>()
-                .Where(x => x.Id == userId)
-                .Set(x => x.UserConfirmed, true)
-                .Update();
+                var updated = await _supabase
+                
+                    .From<Profile>()
+                    .Where(x => x.Id == userId)
+                    .Set(x => x.UserConfirmed, true)
+                    .Update();
+
+                Console.WriteLine(updated);
+                Console.WriteLine(updated.Models.Count);
+                    
                 return Ok(new { message = "Email confirmed successfully!" });
             }
             catch (Exception ex)
@@ -131,7 +136,7 @@ namespace Backend.Controllers
             var smtpHost = "smtp.gmail.com";
             var smtpPort = 587;
             var smtpUsername = "matthewhalim310@gmail.com";
-            var smtpPassword = "waan rmnp kknh ffub"; // env var recommended
+            var smtpPassword = "waan rmnp kknh ffub"; 
 
             var fromEmail = "matthewhalim310@gmail.com";
             var subject = "Confirm Your Email - Yin Yang Commerce";

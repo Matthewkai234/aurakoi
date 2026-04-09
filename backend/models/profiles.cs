@@ -4,7 +4,7 @@ using Supabase.Postgrest.Models;
 namespace Backend.Models
 {
     [Table("profiles")]
-    public class User : BaseModel
+    public class Profile : BaseModel
     {
         [PrimaryKey("id")]
         public Guid Id { get; set; } 

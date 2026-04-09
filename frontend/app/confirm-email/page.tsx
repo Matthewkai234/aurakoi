@@ -42,7 +42,7 @@ export default function ConfirmEmailPage() {
     }, [token]);
 
     return (
-        <div className="flex min-h-screen items-center justify-center theme-aware-background z-20">
+        <div className="flex min-h-screen items-center justify-center theme-aware-background z-50">
             <div className="p-6 rounded-xl shadow-lg text-center max-w-md">
                 {status === "loading" && <p>Verifying your email...</p>}
 

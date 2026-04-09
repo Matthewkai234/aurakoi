@@ -1,6 +1,7 @@
 /* Import Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Aldrich&display=swap');
 @import "tailwindcss";
+
 @plugin "daisyui" {
   themes: light --default, dark --prefersdark;
 }
@@ -40,7 +41,7 @@ body {
 /* Background utility */
 .bg-ink-paper {
   background-color: #faf8f2;
-  background-image: radial-gradient(circle at 25% 40%, rgba(0,0,0,0.02) 1px, transparent 1px);
+  background-image: radial-gradient(circle at 25% 40%, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
   background-size: 24px 24px;
 }
 
@@ -56,6 +57,7 @@ body {
     opacity: 0;
     transform: translateY(8px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -68,27 +70,28 @@ body {
 
 [data-theme="light"] .theme-aware {
   background-color: white !important;
-  color:#616161 !important;
+  color: #616161 !important;
 }
 
 [data-theme="dark"] .theme-aware {
   background-color: #1E2939 !important;
-  color: white !important;            
-} 
+  color: white !important;
+}
 
 [data-theme="light"] .theme-aware-background {
   background-color: #faf8f2;
   color: #1E2939;
-  background-image: radial-gradient(circle at 25% 40%, rgba(0,0,0,0.02) 1px, transparent 1px);
-  background-size: 24px 24px;        
+  background-image: radial-gradient(circle at 25% 40%, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
+  background-size: 24px 24px;
 }
 
 [data-theme="dark"] .theme-aware-background {
   background-color: #bac5d7;
   color: white;
   background-image: radial-gradient(circle at 25% 40%, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 24px 24px;      
+  background-size: 24px 24px;
 }
+
 /* -------------------------------------------------------- */
 [data-theme="light"] .theme-aware-primary-color {
   color: #1E2939;
@@ -97,6 +100,7 @@ body {
 [data-theme="dark"] .theme-aware-primary-color {
   color: white;
 }
+
 /* -------------------------------------------------------- */
 [data-theme="light"] .theme-aware-secondary-color {
   color: #6a7282;
@@ -104,11 +108,12 @@ body {
 
 [data-theme="dark"] .theme-aware-secondary-color {
   color: white;
-} 
+}
 
 [data-theme="dark"] .theme-aware-secondary-text-color {
   color: rgb(133, 139, 175);
 }
+
 /* -------------------------------------------------------- */
 [data-theme="light"] .theme-aware-secondary-background {
   background-color: #1E2939 !important;
@@ -117,6 +122,7 @@ body {
 [data-theme="dark"] .theme-aware-secondary-background {
   background-color: white !important;
 }
+
 /* -------------------------------------------------------- */
 [data-theme="light"] .theme-aware-reverse {
   background-color: #1E2939;
@@ -128,20 +134,40 @@ body {
 
 [data-theme="light"] .theme-aware-button {
   background-color: #1E2939;
-  color:white;
+  color: white;
 }
 
 [data-theme="dark"] .theme-aware-button {
   background-color: white;
-  color:#1E2939;
+  color: #1E2939;
 }
 
 [data-theme="light"] .theme-aware-overlay {
-  background: linear-gradient(to right, #374151, #000000) !important; /* gray-700 → black */
+  background: linear-gradient(to right, #374151, #000000) !important;
+  /* gray-700 → black */
 }
 
 [data-theme="dark"] .theme-aware-overlay {
-  background: linear-gradient(to right, #ffffff22, #302b2b55) !important; /* soft white glow */
+  background: linear-gradient(to right, #ffffff22, #302b2b55) !important;
+  /* soft white glow */
 }
 
+.theme-aware-toast {
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
 
+[data-theme="light"] .theme-aware-toast {
+  background-color: #ffffff;
+  color: #1E2939;
+  border: 1px solid #e2e8f0;
+}
+
+[data-theme="dark"] .theme-aware-toast {
+  background-color: #1E2939;
+  color: white;
+  border: 1px solid #334155;
+}
